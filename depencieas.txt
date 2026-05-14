@@ -1,0 +1,85 @@
+Analisis de dependencias - Monetto API
+
+Proyecto analizado
+- Tipo: backend API async en Python con FastAPI.
+- Paquete: monetto-api.
+- Version del proyecto: 0.1.0.
+- Python requerido: >=3.11.
+- Fuente principal de dependencias: pyproject.toml.
+- No se encontro archivo lock; las versiones listadas son restricciones directas del proyecto.
+
+Dependencias de produccion
+- fastapi>=0.115.0
+  Framework web ASGI usado por app/main.py y controladores.
+- uvicorn[standard]>=0.30.0
+  Servidor ASGI para ejecutar la API localmente o en despliegue.
+- sqlalchemy[asyncio]>=2.0.30
+  ORM y consultas async para modelos, repositorios y sesiones de base de datos.
+- aiomysql>=0.2.0
+  Driver async de MySQL usado por la URL mysql+aiomysql.
+- alembic>=1.13.2
+  Migraciones de base de datos en la carpeta alembic.
+- pydantic[email]>=2.8.0
+  DTOs, validacion de datos y EmailStr. El extra email instala soporte para emails.
+- pydantic-settings>=2.4.0
+  Carga de configuracion desde variables de entorno y archivo .env.
+- python-jose[cryptography]>=3.3.0
+  Creacion y validacion de JWT.
+- passlib[bcrypt]>=1.7.4
+  Hashing y verificacion de contrasenas.
+- bcrypt==4.0.1
+  Backend bcrypt fijado para compatibilidad con passlib.
+- python-multipart>=0.0.9
+  Soporte para formularios multipart/form-data en FastAPI.
+- reportlab>=4.2.0
+  Generacion de reportes PDF.
+- greenlet>=3.0.3
+  Requerido por SQLAlchemy para operaciones async/ORM.
+
+Dependencias de desarrollo y pruebas
+- httpx>=0.27.0
+  Cliente HTTP usado en tests de controladores con ASGITransport/AsyncClient.
+- pytest>=8.2.0
+  Framework de pruebas.
+- pytest-asyncio>=0.23.0
+  Soporte para pruebas async.
+
+Servicios y requisitos externos
+- MySQL 8 o compatible.
+- Base local esperada: monetto.
+- Base de pruebas esperada: monetto_test.
+- URL por defecto en .env.example:
+  mysql+aiomysql://root:1234@localhost:3306/monetto
+- URL por defecto en app/config/settings.py:
+  mysql+aiomysql://monetto:monetto@localhost:3306/monetto
+
+Variables de entorno principales
+- APP_NAME
+- ENVIRONMENT
+- DEBUG
+- API_PREFIX
+- DB_URL
+- SECRET_KEY
+- ACCESS_TOKEN_EXPIRE_MINUTES
+- JWT_ALGORITHM
+- BACKEND_CORS_ORIGINS
+- TEST_DB_URL, usada por los tests si se necesita sobrescribir la base de pruebas.
+
+Comandos utiles
+- Crear entorno:
+  python -m venv .venv
+- Activar entorno en Windows:
+  .venv\Scripts\activate
+- Instalar dependencias de runtime y desarrollo:
+  python -m pip install -e ".[dev]"
+- Ejecutar migraciones:
+  alembic upgrade head
+- Ejecutar API:
+  uvicorn app.main:app --reload
+- Ejecutar pruebas:
+  pytest
+
+Notas del analisis
+- Los imports revisados coinciden con las dependencias directas declaradas en pyproject.toml.
+- No se detectaron librerias externas usadas por app, alembic o tests que falten en pyproject.toml.
+- Hay archivos __pycache__ y .pytest_cache generados localmente; no son dependencias del proyecto.

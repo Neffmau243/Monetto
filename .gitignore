@@ -1,0 +1,31 @@
+.venv/
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.pyc
+*.pyo
+*.db
+.env.local
+dist/
+build/
+
+# Python
+.venv/
+__pycache__/
+*.pyc
+
+# Env
+.env
+
+# Node
+node_modules/
+
+# Vue
+dist/
+
+# VSCode
+.vscode/
+
+# Logs
+*.log

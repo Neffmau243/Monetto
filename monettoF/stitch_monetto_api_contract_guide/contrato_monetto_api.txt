@@ -1,0 +1,25 @@
+# Guia frontend - Contrato Monetto API
+
+Esta guia resume lo que el frontend en Vue necesita saber para consumir el backend sin adivinar nombres, formatos ni flujos.
+
+## Base tecnica
+- API local: `http://127.0.0.1:8000`
+- Prefijo real de rutas: `/api`
+- Autenticacion: `Authorization: Bearer <access_token>`
+- Formato general: JSON, salvo descarga PDF.
+
+## Vistas requeridas para el MVP
+1. **Login / Registro**: POST /api/auth/register, POST /api/auth/login.
+2. **Dashboard**: Resumen con tarjetas y graficos.
+3. **Ingresos**: GET /api/transactions?type=INCOME.
+4. **Gastos**: GET /api/transactions?type=EXPENSE.
+5. **Presupuesto mensual**: Gestion del limite mensual.
+6. **Categorias**: Gestion de categorias personalizadas.
+7. **Reportes**: Previsualizacion JSON y descarga PDF.
+
+## Convenciones
+- Montos como string decimal: `"125.00"`.
+- Fechas: `YYYY-MM-DD`.
+- Meses: `YYYY-MM`.
+- Tipos: `INCOME` y `EXPENSE`.
+- Una transaccion INCOME solo usa categoria INCOME, y viceversa.

@@ -1,0 +1,903 @@
+{
+  "name": "Monetto API route map",
+  "generatedAt": "2026-05-12T20:42:21.699942+00:00",
+  "source": "app.main:app OpenAPI and FastAPI route table",
+  "baseUrlVariable": "{{base_url}}",
+  "apiPrefix": "/api",
+  "summary": {
+    "apiRouteCount": 21,
+    "documentationRouteCount": 4,
+    "totalRouteCount": 25
+  },
+  "routes": [
+    {
+      "type": "api",
+      "method": "POST",
+      "path": "/api/auth/login",
+      "operationId": "login_api_auth_login_post",
+      "summary": "Login",
+      "tags": [
+        "Auth"
+      ],
+      "authRequired": false,
+      "parameters": [],
+      "requestBody": "UserLogin",
+      "responses": {
+        "200": {
+          "description": "Successful Response",
+          "model": "Token",
+          "contentTypes": [
+            "application/json"
+          ]
+        },
+        "422": {
+          "description": "Validation Error",
+          "model": "HTTPValidationError",
+          "contentTypes": [
+            "application/json"
+          ]
+        }
+      }
+    },
+    {
+      "type": "api",
+      "method": "POST",
+      "path": "/api/auth/register",
+      "operationId": "register_api_auth_register_post",
+      "summary": "Register",
+      "tags": [
+        "Auth"
+      ],
+      "authRequired": false,
+      "parameters": [],
+      "requestBody": "UserCreate",
+      "responses": {
+        "201": {
+          "description": "Successful Response",
+          "model": "UserOut",
+          "contentTypes": [
+            "application/json"
+          ]
+        },
+        "422": {
+          "description": "Validation Error",
+          "model": "HTTPValidationError",
+          "contentTypes": [
+            "application/json"
+          ]
+        }
+      }
+    },
+    {
+      "type": "api",
+      "method": "GET",
+      "path": "/api/auth/me",
+      "operationId": "me_api_auth_me_get",
+      "summary": "Me",
+      "tags": [
+        "Auth"
+      ],
+      "authRequired": true,
+      "parameters": [],
+      "requestBody": null,
+      "responses": {
+        "200": {
+          "description": "Successful Response",
+          "model": "UserOut",
+          "contentTypes": [
+            "application/json"
+          ]
+        }
+      }
+    },
+    {
+      "type": "api",
+      "method": "GET",
+      "path": "/api/budgets",
+      "operationId": "list_budgets_api_budgets_get",
+      "summary": "List Budgets",
+      "tags": [
+        "Budgets"
+      ],
+      "authRequired": true,
+      "parameters": [],
+      "requestBody": null,
+      "responses": {
+        "200": {
+          "description": "Successful Response",
+          "model": {
+            "type": "array",
+            "items": "BudgetOut"
+          },
+          "contentTypes": [
+            "application/json"
+          ]
+        }
+      }
+    },
+    {
+      "type": "api",
+      "method": "POST",
+      "path": "/api/budgets",
+      "operationId": "create_budget_api_budgets_post",
+      "summary": "Create Budget",
+      "tags": [
+        "Budgets"
+      ],
+      "authRequired": true,
+      "parameters": [],
+      "requestBody": "BudgetCreate",
+      "responses": {
+        "201": {
+          "description": "Successful Response",
+          "model": "BudgetOut",
+          "contentTypes": [
+            "application/json"
+          ]
+        },
+        "422": {
+          "description": "Validation Error",
+          "model": "HTTPValidationError",
+          "contentTypes": [
+            "application/json"
+          ]
+        }
+      }
+    },
+    {
+      "type": "api",
+      "method": "DELETE",
+      "path": "/api/budgets/{budget_id}",
+      "operationId": "delete_budget_api_budgets__budget_id__delete",
+      "summary": "Delete Budget",
+      "tags": [
+        "Budgets"
+      ],
+      "authRequired": true,
+      "parameters": [
+        {
+          "name": "budget_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "title": "Budget Id"
+          }
+        }
+      ],
+      "requestBody": null,
+      "responses": {
+        "200": {
+          "description": "Successful Response",
+          "model": "MessageOut",
+          "contentTypes": [
+            "application/json"
+          ]
+        },
+        "422": {
+          "description": "Validation Error",
+          "model": "HTTPValidationError",
+          "contentTypes": [
+            "application/json"
+          ]
+        }
+      }
+    },
+    {
+      "type": "api",
+      "method": "PUT",
+      "path": "/api/budgets/{budget_id}",
+      "operationId": "update_budget_api_budgets__budget_id__put",
+      "summary": "Update Budget",
+      "tags": [
+        "Budgets"
+      ],
+      "authRequired": true,
+      "parameters": [
+        {
+          "name": "budget_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "title": "Budget Id"
+          }
+        }
+      ],
+      "requestBody": "BudgetUpdate",
+      "responses": {
+        "200": {
+          "description": "Successful Response",
+          "model": "BudgetOut",
+          "contentTypes": [
+            "application/json"
+          ]
+        },
+        "422": {
+          "description": "Validation Error",
+          "model": "HTTPValidationError",
+          "contentTypes": [
+            "application/json"
+          ]
+        }
+      }
+    },
+    {
+      "type": "api",
+      "method": "GET",
+      "path": "/api/categories",
+      "operationId": "list_categories_api_categories_get",
+      "summary": "List Categories",
+      "tags": [
+        "Categories"
+      ],
+      "authRequired": true,
+      "parameters": [
+        {
+          "name": "type",
+          "in": "query",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TransactionType"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Type"
+          }
+        }
+      ],
+      "requestBody": null,
+      "responses": {
+        "200": {
+          "description": "Successful Response",
+          "model": {
+            "type": "array",
+            "items": "CategoryOut"
+          },
+          "contentTypes": [
+            "application/json"
+          ]
+        },
+        "422": {
+          "description": "Validation Error",
+          "model": "HTTPValidationError",
+          "contentTypes": [
+            "application/json"
+          ]
+        }
+      }
+    },
+    {
+      "type": "api",
+      "method": "POST",
+      "path": "/api/categories",
+      "operationId": "create_category_api_categories_post",
+      "summary": "Create Category",
+      "tags": [
+        "Categories"
+      ],
+      "authRequired": true,
+      "parameters": [],
+      "requestBody": "CategoryCreate",
+      "responses": {
+        "201": {
+          "description": "Successful Response",
+          "model": "CategoryOut",
+          "contentTypes": [
+            "application/json"
+          ]
+        },
+        "422": {
+          "description": "Validation Error",
+          "model": "HTTPValidationError",
+          "contentTypes": [
+            "application/json"
+          ]
+        }
+      }
+    },
+    {
+      "type": "api",
+      "method": "DELETE",
+      "path": "/api/categories/{category_id}",
+      "operationId": "delete_category_api_categories__category_id__delete",
+      "summary": "Delete Category",
+      "tags": [
+        "Categories"
+      ],
+      "authRequired": true,
+      "parameters": [
+        {
+          "name": "category_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "title": "Category Id"
+          }
+        }
+      ],
+      "requestBody": null,
+      "responses": {
+        "200": {
+          "description": "Successful Response",
+          "model": "MessageOut",
+          "contentTypes": [
+            "application/json"
+          ]
+        },
+        "422": {
+          "description": "Validation Error",
+          "model": "HTTPValidationError",
+          "contentTypes": [
+            "application/json"
+          ]
+        }
+      }
+    },
+    {
+      "type": "api",
+      "method": "PUT",
+      "path": "/api/categories/{category_id}",
+      "operationId": "update_category_api_categories__category_id__put",
+      "summary": "Update Category",
+      "tags": [
+        "Categories"
+      ],
+      "authRequired": true,
+      "parameters": [
+        {
+          "name": "category_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "title": "Category Id"
+          }
+        }
+      ],
+      "requestBody": "CategoryUpdate",
+      "responses": {
+        "200": {
+          "description": "Successful Response",
+          "model": "CategoryOut",
+          "contentTypes": [
+            "application/json"
+          ]
+        },
+        "422": {
+          "description": "Validation Error",
+          "model": "HTTPValidationError",
+          "contentTypes": [
+            "application/json"
+          ]
+        }
+      }
+    },
+    {
+      "type": "api",
+      "method": "GET",
+      "path": "/api/dashboard/expenses-by-category",
+      "operationId": "expenses_by_category_api_dashboard_expenses_by_category_get",
+      "summary": "Expenses By Category",
+      "tags": [
+        "Dashboard"
+      ],
+      "authRequired": true,
+      "parameters": [
+        {
+          "name": "month",
+          "in": "query",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^\\d{4}-\\d{2}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Month"
+          }
+        }
+      ],
+      "requestBody": null,
+      "responses": {
+        "200": {
+          "description": "Successful Response",
+          "model": {
+            "type": "array",
+            "items": "ExpensesByCategoryOut"
+          },
+          "contentTypes": [
+            "application/json"
+          ]
+        },
+        "422": {
+          "description": "Validation Error",
+          "model": "HTTPValidationError",
+          "contentTypes": [
+            "application/json"
+          ]
+        }
+      }
+    },
+    {
+      "type": "api",
+      "method": "GET",
+      "path": "/api/dashboard/monthly-trend",
+      "operationId": "monthly_trend_api_dashboard_monthly_trend_get",
+      "summary": "Monthly Trend",
+      "tags": [
+        "Dashboard"
+      ],
+      "authRequired": true,
+      "parameters": [
+        {
+          "name": "months",
+          "in": "query",
+          "required": false,
+          "schema": {
+            "type": "integer",
+            "maximum": 24,
+            "minimum": 1,
+            "default": 6,
+            "title": "Months"
+          }
+        }
+      ],
+      "requestBody": null,
+      "responses": {
+        "200": {
+          "description": "Successful Response",
+          "model": {
+            "type": "array",
+            "items": "MonthlyTrendOut"
+          },
+          "contentTypes": [
+            "application/json"
+          ]
+        },
+        "422": {
+          "description": "Validation Error",
+          "model": "HTTPValidationError",
+          "contentTypes": [
+            "application/json"
+          ]
+        }
+      }
+    },
+    {
+      "type": "api",
+      "method": "GET",
+      "path": "/api/dashboard/summary",
+      "operationId": "summary_api_dashboard_summary_get",
+      "summary": "Summary",
+      "tags": [
+        "Dashboard"
+      ],
+      "authRequired": true,
+      "parameters": [
+        {
+          "name": "month",
+          "in": "query",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^\\d{4}-\\d{2}$"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Month"
+          }
+        }
+      ],
+      "requestBody": null,
+      "responses": {
+        "200": {
+          "description": "Successful Response",
+          "model": "DashboardSummaryOut",
+          "contentTypes": [
+            "application/json"
+          ]
+        },
+        "422": {
+          "description": "Validation Error",
+          "model": "HTTPValidationError",
+          "contentTypes": [
+            "application/json"
+          ]
+        }
+      }
+    },
+    {
+      "type": "api",
+      "method": "GET",
+      "path": "/api/health",
+      "operationId": "health_api_health_get",
+      "summary": "Health",
+      "tags": [
+        "Health"
+      ],
+      "authRequired": false,
+      "parameters": [],
+      "requestBody": null,
+      "responses": {
+        "200": {
+          "description": "Successful Response",
+          "model": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Response Health Api Health Get"
+          },
+          "contentTypes": [
+            "application/json"
+          ]
+        }
+      }
+    },
+    {
+      "type": "api",
+      "method": "GET",
+      "path": "/api/reports/monthly",
+      "operationId": "monthly_report_api_reports_monthly_get",
+      "summary": "Monthly Report",
+      "tags": [
+        "Reports"
+      ],
+      "authRequired": true,
+      "parameters": [
+        {
+          "name": "month",
+          "in": "query",
+          "required": true,
+          "schema": {
+            "type": "string",
+            "pattern": "^\\d{4}-\\d{2}$",
+            "title": "Month"
+          }
+        },
+        {
+          "name": "format",
+          "in": "query",
+          "required": false,
+          "schema": {
+            "enum": [
+              "pdf",
+              "json"
+            ],
+            "type": "string",
+            "default": "pdf",
+            "title": "Format"
+          }
+        }
+      ],
+      "requestBody": null,
+      "responses": {
+        "200": {
+          "description": "Monthly report returned as JSON or PDF.",
+          "model": "ReportMonthlyOut",
+          "contentTypes": [
+            "application/json",
+            "application/pdf"
+          ]
+        },
+        "422": {
+          "description": "Validation Error",
+          "model": "HTTPValidationError",
+          "contentTypes": [
+            "application/json"
+          ]
+        }
+      }
+    },
+    {
+      "type": "api",
+      "method": "GET",
+      "path": "/api/transactions",
+      "operationId": "list_transactions_api_transactions_get",
+      "summary": "List Transactions",
+      "tags": [
+        "Transactions"
+      ],
+      "authRequired": true,
+      "parameters": [
+        {
+          "name": "type",
+          "in": "query",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/TransactionType"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Type"
+          }
+        },
+        {
+          "name": "category_id",
+          "in": "query",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Category Id"
+          }
+        },
+        {
+          "name": "date_from",
+          "in": "query",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date From"
+          }
+        },
+        {
+          "name": "date_to",
+          "in": "query",
+          "required": false,
+          "schema": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "date"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Date To"
+          }
+        },
+        {
+          "name": "page",
+          "in": "query",
+          "required": false,
+          "schema": {
+            "type": "integer",
+            "minimum": 1,
+            "default": 1,
+            "title": "Page"
+          }
+        },
+        {
+          "name": "limit",
+          "in": "query",
+          "required": false,
+          "schema": {
+            "type": "integer",
+            "maximum": 100,
+            "minimum": 1,
+            "default": 20,
+            "title": "Limit"
+          }
+        }
+      ],
+      "requestBody": null,
+      "responses": {
+        "200": {
+          "description": "Successful Response",
+          "model": "PaginatedTransactionsOut",
+          "contentTypes": [
+            "application/json"
+          ]
+        },
+        "422": {
+          "description": "Validation Error",
+          "model": "HTTPValidationError",
+          "contentTypes": [
+            "application/json"
+          ]
+        }
+      }
+    },
+    {
+      "type": "api",
+      "method": "POST",
+      "path": "/api/transactions",
+      "operationId": "create_transaction_api_transactions_post",
+      "summary": "Create Transaction",
+      "tags": [
+        "Transactions"
+      ],
+      "authRequired": true,
+      "parameters": [],
+      "requestBody": "TransactionCreate",
+      "responses": {
+        "201": {
+          "description": "Successful Response",
+          "model": "TransactionOut",
+          "contentTypes": [
+            "application/json"
+          ]
+        },
+        "422": {
+          "description": "Validation Error",
+          "model": "HTTPValidationError",
+          "contentTypes": [
+            "application/json"
+          ]
+        }
+      }
+    },
+    {
+      "type": "api",
+      "method": "DELETE",
+      "path": "/api/transactions/{transaction_id}",
+      "operationId": "delete_transaction_api_transactions__transaction_id__delete",
+      "summary": "Delete Transaction",
+      "tags": [
+        "Transactions"
+      ],
+      "authRequired": true,
+      "parameters": [
+        {
+          "name": "transaction_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "title": "Transaction Id"
+          }
+        }
+      ],
+      "requestBody": null,
+      "responses": {
+        "200": {
+          "description": "Successful Response",
+          "model": "MessageOut",
+          "contentTypes": [
+            "application/json"
+          ]
+        },
+        "422": {
+          "description": "Validation Error",
+          "model": "HTTPValidationError",
+          "contentTypes": [
+            "application/json"
+          ]
+        }
+      }
+    },
+    {
+      "type": "api",
+      "method": "GET",
+      "path": "/api/transactions/{transaction_id}",
+      "operationId": "get_transaction_api_transactions__transaction_id__get",
+      "summary": "Get Transaction",
+      "tags": [
+        "Transactions"
+      ],
+      "authRequired": true,
+      "parameters": [
+        {
+          "name": "transaction_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "title": "Transaction Id"
+          }
+        }
+      ],
+      "requestBody": null,
+      "responses": {
+        "200": {
+          "description": "Successful Response",
+          "model": "TransactionOut",
+          "contentTypes": [
+            "application/json"
+          ]
+        },
+        "422": {
+          "description": "Validation Error",
+          "model": "HTTPValidationError",
+          "contentTypes": [
+            "application/json"
+          ]
+        }
+      }
+    },
+    {
+      "type": "api",
+      "method": "PUT",
+      "path": "/api/transactions/{transaction_id}",
+      "operationId": "update_transaction_api_transactions__transaction_id__put",
+      "summary": "Update Transaction",
+      "tags": [
+        "Transactions"
+      ],
+      "authRequired": true,
+      "parameters": [
+        {
+          "name": "transaction_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "title": "Transaction Id"
+          }
+        }
+      ],
+      "requestBody": "TransactionUpdate",
+      "responses": {
+        "200": {
+          "description": "Successful Response",
+          "model": "TransactionOut",
+          "contentTypes": [
+            "application/json"
+          ]
+        },
+        "422": {
+          "description": "Validation Error",
+          "model": "HTTPValidationError",
+          "contentTypes": [
+            "application/json"
+          ]
+        }
+      }
+    }
+  ],
+  "documentationRoutes": [
+    {
+      "type": "documentation",
+      "method": "GET",
+      "path": "/openapi.json",
+      "name": "openapi",
+      "authRequired": false
+    },
+    {
+      "type": "documentation",
+      "method": "GET",
+      "path": "/docs",
+      "name": "swagger_ui_html",
+      "authRequired": false
+    },
+    {
+      "type": "documentation",
+      "method": "GET",
+      "path": "/docs/oauth2-redirect",
+      "name": "swagger_ui_redirect",
+      "authRequired": false
+    },
+    {
+      "type": "documentation",
+      "method": "GET",
+      "path": "/redoc",
+      "name": "redoc_html",
+      "authRequired": false
+    }
+  ],
+  "postmanCollection": "docs/monetto-api.postman_collection.json"
+}

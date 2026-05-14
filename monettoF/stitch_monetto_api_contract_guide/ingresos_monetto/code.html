@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#92002a",
+                        "tertiary-fixed-dim": "#ffb2b7",
+                        "surface-tint": "#4356b6",
+                        "primary-fixed-dim": "#bac3ff",
+                        "outline": "#757683",
+                        "inverse-primary": "#bac3ff",
+                        "on-error": "#ffffff",
+                        "tertiary": "#6f001e",
+                        "surface-container-high": "#dce9ff",
+                        "inverse-surface": "#213145",
+                        "primary-fixed": "#dee1ff",
+                        "background": "#f8f9ff",
+                        "surface-container-highest": "#d3e4fe",
+                        "tertiary-fixed": "#ffdadb",
+                        "on-primary-fixed-variant": "#293d9c",
+                        "surface-variant": "#d3e4fe",
+                        "on-tertiary-fixed": "#40000d",
+                        "primary": "#10298a",
+                        "on-primary-container": "#abb7ff",
+                        "error-container": "#ffdad6",
+                        "surface-container": "#e5eeff",
+                        "on-error-container": "#93000a",
+                        "on-tertiary": "#ffffff",
+                        "secondary-container": "#6cf8bb",
+                        "outline-variant": "#c5c5d4",
+                        "on-secondary-fixed": "#002113",
+                        "primary-container": "#2e42a1",
+                        "on-surface": "#0b1c30",
+                        "surface-bright": "#f8f9ff",
+                        "inverse-on-surface": "#eaf1ff",
+                        "on-primary": "#ffffff",
+                        "on-background": "#0b1c30",
+                        "tertiary-container": "#9a002d",
+                        "surface-container-lowest": "#ffffff",
+                        "on-secondary-fixed-variant": "#005236",
+                        "on-primary-fixed": "#001159",
+                        "error": "#ba1a1a",
+                        "surface": "#f8f9ff",
+                        "surface-dim": "#cbdbf5",
+                        "on-secondary-container": "#00714d",
+                        "on-surface-variant": "#454652",
+                        "on-tertiary-container": "#ffa2a8",
+                        "surface-container-low": "#eff4ff",
+                        "secondary-fixed": "#6ffbbe",
+                        "secondary-fixed-dim": "#4edea3",
+                        "on-secondary": "#ffffff",
+                        "secondary": "#006c49"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max-width": "1280px",
+                        "unit": "8px",
+                        "margin-desktop": "40px",
+                        "gutter": "24px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Manrope"],
+                        "label-bold": ["Manrope"],
+                        "headline-lg": ["Manrope"],
+                        "body-md": ["Manrope"],
+                        "display-currency": ["Manrope"],
+                        "label-sm": ["Manrope"],
+                        "headline-md": ["Manrope"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", {"lineHeight": "28px", "fontWeight": "400"}],
+                        "label-bold": ["14px", {"lineHeight": "20px", "fontWeight": "600"}],
+                        "headline-lg": ["32px", {"lineHeight": "40px", "fontWeight": "600"}],
+                        "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                        "display-currency": ["40px", {"lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700"}],
+                        "label-sm": ["12px", {"lineHeight": "16px", "fontWeight": "500"}],
+                        "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-background font-body-md overflow-x-hidden">
+<!-- Top Navigation Bar -->
+<header class="flex justify-between items-center w-full px-margin-desktop h-16 sticky top-0 z-50 bg-surface dark:bg-surface-dim border-b border-outline-variant dark:border-outline shadow-sm">
+<div class="flex items-center gap-8">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Monetto</span>
+<nav class="hidden md:flex gap-6">
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">Dashboard</a>
+<a class="font-body-md text-body-md text-primary dark:text-primary-fixed border-b-2 border-primary dark:border-primary-fixed pb-1 cursor-pointer" href="#">Transacciones</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">Presupuestos</a>
+<a class="font-body-md text-body-md text-on-surface-variant dark:text-outline-variant hover:text-primary dark:hover:text-primary-fixed-dim transition-colors cursor-pointer" href="#">Reportes</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all">
+<span class="material-symbols-outlined" data-icon="notifications">notifications</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:bg-surface-container-high rounded-full transition-all">
+<span class="material-symbols-outlined" data-icon="settings">settings</span>
+</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-outline-variant">
+<img alt="Avatar del usuario" data-alt="A professional headshot of a financial advisor in a bright, modern office. The lighting is soft and natural, emphasizing a trustworthy and professional atmosphere. The color palette consists of clean whites and corporate blues, maintaining a high-key, modern corporate aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAY_IbbQLJOx8gnHL79EeQfM7auwwBEXdigmuAw_BJBQYo6JNiNZPEUxcwrWTkz8LoLIADg1cfiTCQyIoGGh8yHq-K9ngmlQcFSNgzJfRbssDONT2tUUbBfr2UDyV4VEBDAXkISxMSvrFmcfVgQYvz6t3t1kL_hXz7J-kw8WnVVkuUp7XP8vzbZ0MdjG9NaZwgYNFKctll2K301AUyoBVEjyi8O8_JGfbQLCUgcKKYoSdsBCAPbpH-ItIcN8o-0XkAt0k-6y4GFznAR"/>
+</div>
+</div>
+</header>
+<div class="flex">
+<!-- Side Navigation Bar -->
+<aside class="hidden lg:flex flex-col p-unit fixed left-0 top-16 h-[calc(100vh-64px)] w-64 border-r border-outline-variant bg-surface-container-low dark:bg-surface-container-highest">
+<div class="px-4 py-6">
+<h3 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed-dim">Gestián de Patrimonio</h3>
+<p class="text-on-surface-variant text-label-sm font-label-sm">Plan Premium</p>
+</div>
+<nav class="flex-1 space-y-1 px-2">
+<a class="flex items-center gap-3 px-4 py-3 font-label-bold text-label-bold text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container hover:translate-x-1 transition-transform duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span>
+<span>Resumen</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 font-label-bold text-label-bold bg-secondary-container dark:bg-secondary text-on-secondary-container dark:text-on-secondary rounded-lg transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+<span>Ingresos y Gastos</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 font-label-bold text-label-bold text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container hover:translate-x-1 transition-transform duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="account_balance_wallet">account_balance_wallet</span>
+<span>Presupuestos</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 font-label-bold text-label-bold text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container hover:translate-x-1 transition-transform duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="category">category</span>
+<span>Categorías</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 font-label-bold text-label-bold text-on-surface-variant dark:text-on-surface-variant hover:bg-surface-container-high dark:hover:bg-surface-container hover:translate-x-1 transition-transform duration-200 rounded-lg" href="#">
+<span class="material-symbols-outlined" data-icon="insert_chart">insert_chart</span>
+<span>Reportes</span>
+</a>
+</nav>
+<div class="p-4">
+<button class="w-full flex items-center justify-center gap-2 bg-primary text-on-primary py-3 rounded-xl font-label-bold text-label-bold shadow-md hover:bg-primary-container transition-all">
+<span class="material-symbols-outlined" data-icon="add">add</span>
+<span>Añadir Transacción</span>
+</button>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 lg:ml-64 p-margin-desktop max-w-[1280px] mx-auto">
+<header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+<div>
+<h1 class="font-headline-lg text-headline-lg text-on-surface">Gestión de Ingresos</h1>
+<p class="text-on-surface-variant font-body-md text-body-md">Visualiza y administra tus flujos de capital entrante.</p>
+</div>
+<button class="flex items-center gap-2 bg-primary text-on-primary px-6 py-3 rounded-xl font-label-bold text-label-bold shadow-lg hover:shadow-xl hover:translate-y-[-2px] transition-all">
+<span class="material-symbols-outlined" data-icon="add_circle">add_circle</span>
+<span>Añadir Ingreso</span>
+</button>
+</header>
+<!-- Filters Section -->
+<section class="bg-surface-container-low p-6 rounded-xl border border-outline-variant mb-8 grid grid-cols-1 md:grid-cols-3 gap-6 items-end">
+<div class="flex flex-col gap-2">
+<label class="text-label-sm font-label-sm text-on-surface-variant">Rango de Fechas</label>
+<div class="flex gap-2">
+<input class="bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-md font-body-md focus:ring-2 focus:ring-primary focus:border-primary outline-none w-full" type="date"/>
+<input class="bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-md font-body-md focus:ring-2 focus:ring-primary focus:border-primary outline-none w-full" type="date"/>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="text-label-sm font-label-sm text-on-surface-variant">Categoría de Ingreso</label>
+<select class="bg-surface-container-lowest border border-outline-variant rounded-lg px-3 py-2 text-body-md font-body-md focus:ring-2 focus:ring-primary focus:border-primary outline-none">
+<option>Todas las categorías</option>
+<option>Salario</option>
+<option>Inversiones</option>
+<option>Freelance</option>
+<option>Ventas</option>
+</select>
+</div>
+<div class="flex gap-2">
+<button class="flex-1 bg-surface-container-highest text-on-surface px-4 py-2 rounded-lg font-label-bold text-label-bold hover:bg-outline-variant transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined" data-icon="filter_list">filter_list</span>
+                        Aplicar Filtros
+                    </button>
+<button class="p-2 border border-outline-variant text-on-surface-variant rounded-lg hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined" data-icon="refresh">refresh</span>
+</button>
+</div>
+</section>
+<!-- Transaction Table -->
+<div class="bg-surface-container-lowest rounded-xl border border-outline-variant shadow-sm overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container text-on-surface-variant font-label-bold text-label-bold uppercase tracking-wider">
+<th class="px-6 py-4 border-b border-outline-variant">Fecha</th>
+<th class="px-6 py-4 border-b border-outline-variant">Descripción</th>
+<th class="px-6 py-4 border-b border-outline-variant">Categoría</th>
+<th class="px-6 py-4 border-b border-outline-variant text-right">Monto</th>
+<th class="px-6 py-4 border-b border-outline-variant text-center">Acciones</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant">
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">15 Oct 2023</td>
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">Pago Nómina Mensual</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-secondary-container/20 text-on-secondary-container rounded-full text-label-sm font-label-sm">Salario</span>
+</td>
+<td class="px-6 py-4 font-label-bold text-label-bold text-right text-[#10B981]">
+                                    + $3,250.00
+                                </td>
+<td class="px-6 py-4 text-center">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">12 Oct 2023</td>
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">Dividendos Acciones Tech</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-primary-container/20 text-on-primary-container rounded-full text-label-sm font-label-sm">Inversiones</span>
+</td>
+<td class="px-6 py-4 font-label-bold text-label-bold text-right text-[#10B981]">
+                                    + $425.50
+                                </td>
+<td class="px-6 py-4 text-center">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">08 Oct 2023</td>
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">Proyecto Rediseño Web</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-tertiary-fixed/20 text-on-tertiary-fixed-variant rounded-full text-label-sm font-label-sm">Freelance</span>
+</td>
+<td class="px-6 py-4 font-label-bold text-label-bold text-right text-[#10B981]">
+                                    + $1,200.00
+                                </td>
+<td class="px-6 py-4 text-center">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">05 Oct 2023</td>
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">Venta Monitor Usado</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-secondary-fixed/20 text-on-secondary-fixed-variant rounded-full text-label-sm font-label-sm">Ventas</span>
+</td>
+<td class="px-6 py-4 font-label-bold text-label-bold text-right text-[#10B981]">
+                                    + $150.00
+                                </td>
+<td class="px-6 py-4 text-center">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors group">
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">01 Oct 2023</td>
+<td class="px-6 py-4 font-body-md text-body-md text-on-surface">Reembolso Seguro Médico</td>
+<td class="px-6 py-4">
+<span class="px-3 py-1 bg-outline-variant/20 text-on-surface-variant rounded-full text-label-sm font-label-sm">Otros</span>
+</td>
+<td class="px-6 py-4 font-label-bold text-label-bold text-right text-[#10B981]">
+                                    + $89.20
+                                </td>
+<td class="px-6 py-4 text-center">
+<button class="text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="more_vert">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Pagination -->
+<div class="p-4 bg-surface-container-lowest border-t border-outline-variant flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-on-surface-variant">Mostrando 1-5 de 24 resultados</span>
+<div class="flex gap-2">
+<button class="p-2 rounded-lg border border-outline-variant hover:bg-surface-container transition-colors disabled:opacity-50" disabled="">
+<span class="material-symbols-outlined" data-icon="chevron_left">chevron_left</span>
+</button>
+<button class="p-2 rounded-lg border border-outline-variant hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined" data-icon="chevron_right">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Dashboard Summary Widgets (Asymmetric Layout) -->
+<div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-gutter">
+<div class="md:col-span-2 bg-primary p-8 rounded-2xl text-on-primary relative overflow-hidden shadow-xl">
+<div class="relative z-10">
+<p class="font-label-bold text-label-bold opacity-80 mb-2 uppercase tracking-widest">Total Ingresos Octubre</p>
+<h2 class="font-display-currency text-display-currency mb-6">$5,114.70</h2>
+<div class="flex gap-4">
+<div class="bg-white/10 backdrop-blur-md p-4 rounded-xl flex-1">
+<p class="text-label-sm font-label-sm opacity-70">Vs. Mes Anterior</p>
+<p class="text-body-lg font-body-lg flex items-center gap-1">
+<span class="material-symbols-outlined text-secondary-fixed" data-icon="trending_up">trending_up</span>
+                                    +12.4%
+                                </p>
+</div>
+<div class="bg-white/10 backdrop-blur-md p-4 rounded-xl flex-1">
+<p class="text-label-sm font-label-sm opacity-70">Meta Mensual</p>
+<p class="text-body-lg font-body-lg">85% Completado</p>
+</div>
+</div>
+</div>
+<div class="absolute right-[-20px] bottom-[-20px] opacity-10">
+<span class="material-symbols-outlined !text-[200px]" data-icon="account_balance">account_balance</span>
+</div>
+</div>
+<div class="bg-surface-container-high p-8 rounded-2xl border border-outline-variant flex flex-col justify-center">
+<h3 class="font-headline-md text-headline-md text-on-surface mb-4">Mejor Categoría</h3>
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 bg-secondary text-on-secondary rounded-full flex items-center justify-center">
+<span class="material-symbols-outlined" data-icon="work">work</span>
+</div>
+<div>
+<p class="font-label-bold text-label-bold text-on-surface">Salario Profesional</p>
+<p class="text-body-md font-body-md text-on-surface-variant">63% del total</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+<!-- Modal Mockup (Formulario Añadir Ingreso) - Hidden by default but visible in a static design context -->
+<div class="fixed inset-0 bg-on-surface/40 backdrop-blur-sm z-[100] hidden items-center justify-center p-4">
+<div class="bg-surface-container-lowest w-full max-w-lg rounded-2xl shadow-2xl overflow-hidden">
+<header class="p-6 border-b border-outline-variant flex justify-between items-center">
+<h2 class="font-headline-md text-headline-md text-on-surface">Nuevo Ingreso</h2>
+<button class="p-2 hover:bg-surface-container rounded-full transition-colors">
+<span class="material-symbols-outlined" data-icon="close">close</span>
+</button>
+</header>
+<form class="p-6 space-y-6">
+<div class="grid grid-cols-2 gap-4">
+<div class="flex flex-col gap-2">
+<label class="font-label-bold text-label-bold text-on-surface-variant">Fecha</label>
+<input class="bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary outline-none" type="date"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-bold text-label-bold text-on-surface-variant">Monto ($)</label>
+<input class="bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary outline-none font-label-bold" placeholder="0.00" step="0.01" type="number"/>
+</div>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-bold text-label-bold text-on-surface-variant">Descripción</label>
+<input class="bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary outline-none" placeholder="Ej. Pago servicios freelance" type="text"/>
+</div>
+<div class="flex flex-col gap-2">
+<label class="font-label-bold text-label-bold text-on-surface-variant">Categoría</label>
+<select class="bg-surface-container-low border border-outline-variant rounded-xl px-4 py-3 focus:ring-2 focus:ring-primary outline-none">
+<option>Seleccionar categoría...</option>
+<option>Salario</option>
+<option>Inversiones</option>
+<option>Freelance</option>
+<option>Ventas</option>
+<option>Otros</option>
+</select>
+</div>
+<footer class="pt-4 flex gap-4">
+<button class="flex-1 py-3 border border-outline-variant rounded-xl font-label-bold text-label-bold text-on-surface-variant hover:bg-surface-container transition-colors" type="button">Cancelar</button>
+<button class="flex-1 py-3 bg-primary text-on-primary rounded-xl font-label-bold text-label-bold shadow-md hover:bg-primary-container transition-all" type="submit">Guardar Ingreso</button>
+</footer>
+</form>
+</div>
+</div>
+</body></html>
