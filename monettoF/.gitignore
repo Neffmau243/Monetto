@@ -11,6 +11,7 @@ node_modules
 dist
 dist-ssr
 *.local
+stitch_monetto_api_contract_guide/**/*.html
 
 # Editor directories and files
 .vscode/*
