@@ -40,7 +40,9 @@ monetto-api/
   alembic/            Migraciones de base de datos
   docs/               Postman, mapa de rutas y notas de autenticacion
   monettoF/           Frontend Vue/Vite
+  scripts/            Scripts de arranque para Windows
   tests/              Suite de pruebas
+  start-dev.cmd       Levanta backend y frontend en dos ventanas
   guiaF.md            Contrato detallado para el frontend
   pyproject.toml      Dependencias y configuracion de herramientas Python
 ```
@@ -51,6 +53,42 @@ monetto-api/
 - MySQL 8.
 - Node.js y npm para el frontend.
 - Git Bash, PowerShell o una terminal compatible.
+
+## Arranque Rapido En Windows
+
+Desde la raiz `monetto-api/`, usa:
+
+```powershell
+.\start-dev.cmd
+```
+
+Ese comando abre dos ventanas: una para el backend y otra para el frontend. Tambien prepara lo necesario para evitar los errores comunes:
+
+- Agrega `C:\Program Files\nodejs` al `PATH` si `npm` no aparece.
+- Usa `.venv` para Python y crea el entorno si falta.
+- Instala dependencias faltantes de backend/frontend.
+- Ejecuta `alembic upgrade head` antes de levantar la API.
+
+URLs locales:
+
+- Frontend: `http://127.0.0.1:5173`
+- Swagger: `http://127.0.0.1:8000/docs`
+- Health check: `http://127.0.0.1:8000/api/health`
+
+Para levantar servicios por separado:
+
+```powershell
+.\start-backend.cmd
+.\start-frontend.cmd
+```
+
+Si solo quieres reparar `npm` en el `PATH`, ejecuta:
+
+```powershell
+.\repair-node-path.cmd
+```
+
+Despues de reparar el `PATH`, abre una terminal nueva para que Windows cargue el cambio.
 
 ## Configuracion
 

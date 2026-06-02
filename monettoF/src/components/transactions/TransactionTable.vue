@@ -22,11 +22,14 @@ const emit = defineEmits<{
     <div class="panel-heading">
       <div>
         <h3>{{ isIncome ? 'Historial de ingresos' : 'Historial de gastos' }}</h3>
-        <p>{{ transactions.length }} movimientos visibles.</p>
+        <p>{{ transactions.length }} movimientos visibles en esta pagina.</p>
       </div>
-      <strong :class="isIncome ? 'money-income' : 'money-expense'">
-        {{ formatMoney(total) }}
-      </strong>
+      <div class="table-total">
+        <span>Total visible</span>
+        <strong :class="isIncome ? 'money-income' : 'money-expense'">
+          {{ formatMoney(total) }}
+        </strong>
+      </div>
     </div>
 
     <div
@@ -48,7 +51,10 @@ const emit = defineEmits<{
         <tbody>
           <tr v-if="transactions.length === 0">
             <td colspan="6">
-              <div class="empty-state">Sin movimientos registrados.</div>
+              <div class="empty-state transaction-empty">
+                <AppIcon :name="isIncome ? 'savings' : 'receipt_long'" :size="28" />
+                <span>Sin movimientos registrados.</span>
+              </div>
             </td>
           </tr>
           <tr v-for="transaction in transactions" :key="transaction.id">
@@ -118,8 +124,37 @@ const emit = defineEmits<{
   padding: 22px 24px;
 }
 
+.table-total {
+  display: grid;
+  justify-items: end;
+  gap: 2px;
+  text-align: right;
+}
+
+.table-total span {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.table-total strong {
+  font-size: 22px;
+  line-height: 1.15;
+  font-variant-numeric: tabular-nums;
+}
+
 .table-scroll {
   overflow-x: auto;
+}
+
+.transaction-empty {
+  gap: 8px;
+  color: var(--text-muted);
+}
+
+.transaction-empty .app-icon {
+  color: var(--primary-strong);
 }
 
 .row-actions-cell {
@@ -144,6 +179,16 @@ const emit = defineEmits<{
 }
 
 @media (max-width: 720px) {
+  .table-panel .panel-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .table-total {
+    justify-items: start;
+    text-align: left;
+  }
+
   .pagination-row {
     align-items: stretch;
     flex-direction: column;

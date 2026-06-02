@@ -111,22 +111,26 @@ watch(
           <span class="eyebrow">Monetto</span>
           <h1>{{ activeItem.label }}</h1>
         </div>
+        <!-- Hidden for now: search has no implemented behavior yet.
         <form class="topbar-search" role="search" @submit.prevent>
           <label class="sr-only" for="workspace-search">Buscar</label>
           <AppIcon name="search" :size="20" />
           <input id="workspace-search" type="search" placeholder="Buscar movimientos, categorías..." />
         </form>
+        -->
         <div class="topbar-actions">
           <span class="sync-pill">
             <AppIcon name="check_circle" :size="18" />
             En línea
           </span>
+          <!-- Hidden for now: notifications/settings do not have product behavior yet.
           <button class="icon-button" type="button" aria-label="Notificaciones">
             <AppIcon name="notifications" :size="22" />
           </button>
           <button class="icon-button" type="button" aria-label="Ajustes">
             <AppIcon name="settings" :size="22" />
           </button>
+          -->
           <button class="ghost-button" type="button" @click="emit('logout')">
             Salir
           </button>
@@ -387,7 +391,7 @@ watch(
   top: 0;
   z-index: 12;
   display: grid;
-  grid-template-columns: minmax(160px, auto) minmax(280px, 520px) auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   justify-content: space-between;
   gap: 18px;
   min-height: 78px;

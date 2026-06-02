@@ -7,11 +7,12 @@ defineProps<{
   icon: string
   tone?: 'neutral' | 'income' | 'expense' | 'success' | 'warning' | 'critical'
   detail?: string
+  featured?: boolean
 }>()
 </script>
 
 <template>
-  <article class="stat-card" :class="tone">
+  <article class="stat-card" :class="[tone, { featured }]">
     <div class="stat-card-header">
       <span>{{ label }}</span>
       <span class="stat-icon">
@@ -27,6 +28,9 @@ defineProps<{
 .stat-card {
   position: relative;
   overflow: hidden;
+  display: grid;
+  align-content: space-between;
+  min-height: 178px;
   padding: 24px;
   border: 1px solid rgba(51, 215, 218, 0.16);
   border-radius: var(--radius);
@@ -34,6 +38,14 @@ defineProps<{
     linear-gradient(180deg, rgba(9, 31, 35, 0.98), rgba(7, 28, 32, 0.98)),
     var(--surface);
   box-shadow: var(--shadow-soft);
+}
+
+.stat-card.featured {
+  min-height: 210px;
+  border-color: rgba(8, 239, 245, 0.34);
+  background:
+    linear-gradient(135deg, rgba(8, 239, 245, 0.16), rgba(82, 231, 168, 0.08) 52%, rgba(7, 28, 32, 0.98)),
+    var(--surface);
 }
 
 .stat-card::before {
@@ -74,6 +86,12 @@ defineProps<{
   font-variant-numeric: tabular-nums;
 }
 
+.stat-card.featured strong {
+  margin-top: 6px;
+  font-size: clamp(42px, 4vw, 58px);
+  letter-spacing: 0;
+}
+
 .stat-card p {
   margin-top: 12px;
   color: var(--text-muted);
@@ -108,7 +126,7 @@ defineProps<{
 }
 
 .stat-card.success .stat-card-header,
-.stat-card.success strong {
+.stat-card.success:not(.featured) strong {
   color: var(--secondary);
 }
 
@@ -122,7 +140,7 @@ defineProps<{
 }
 
 .stat-card.warning .stat-card-header,
-.stat-card.warning strong {
+.stat-card.warning:not(.featured) strong {
   color: var(--warning);
 }
 
@@ -136,7 +154,7 @@ defineProps<{
 }
 
 .stat-card.critical .stat-card-header,
-.stat-card.critical strong {
+.stat-card.critical:not(.featured) strong {
   color: var(--danger);
 }
 

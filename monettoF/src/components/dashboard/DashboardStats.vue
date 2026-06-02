@@ -17,6 +17,7 @@ defineProps<{
       :icon="stat.icon"
       :tone="stat.tone"
       :detail="stat.detail"
+      :featured="stat.featured"
     />
   </div>
 </template>
@@ -24,13 +25,17 @@ defineProps<{
 <style scoped>
 .stats-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1.3fr) repeat(2, minmax(220px, 0.85fr));
   gap: 24px;
 }
 
 @media (max-width: 1180px) {
   .stats-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .stats-grid :deep(.stat-card.featured) {
+    grid-column: 1 / -1;
   }
 }
 

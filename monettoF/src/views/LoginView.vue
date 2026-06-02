@@ -20,7 +20,10 @@ const form = reactive({
 })
 const { login, register } = useAuthSession()
 
-const formTitle = computed(() => (mode.value === 'login' ? 'Iniciar sesión' : 'Crear cuenta'))
+const formTitle = computed(() => (mode.value === 'login' ? 'Iniciar sesion' : 'Crear cuenta'))
+const formHelper = computed(() =>
+  mode.value === 'login' ? 'Entra a tu panel personal.' : 'Crea tu acceso local para Monetto.',
+)
 const submitLabel = computed(() => (mode.value === 'login' ? 'Acceder al panel' : 'Crear cuenta'))
 const passwordAutocomplete = computed(() =>
   mode.value === 'login' ? 'current-password' : 'new-password',
@@ -49,145 +52,110 @@ async function submitAuth() {
 
 <template>
   <main class="auth-page">
-    <section class="auth-card">
-      <div class="auth-visual">
-        <div class="auth-brand">
-          <div class="brand-mark large">
-            <img :src="monettoLogo" alt="" class="brand-logo large" />
-          </div>
+    <section class="auth-card" aria-label="Acceso Monetto">
+      <header class="auth-brand">
+        <img :src="monettoLogo" alt="" class="brand-logo" />
+        <div>
           <h1>Monetto</h1>
+          <p>Gestion de patrimonio</p>
         </div>
-        <h2>Tu patrimonio, bajo control absoluto y seguridad total.</h2>
-        <p>
-          Gestiona transacciones, presupuestos y reportes con la precisión que tu libertad
-          financiera requiere.
-        </p>
-        <div class="trust-list">
-          <div>
-            <AppIcon name="shield" :size="22" />
-            <span>Seguridad bancaria</span>
-          </div>
-          <div>
-            <AppIcon name="insights" :size="22" />
-            <span>Análisis inteligente</span>
-          </div>
-        </div>
-        <div class="auth-ledger-art" aria-hidden="true">
-          <span></span>
-          <span></span>
-          <span></span>
-          <i></i>
-        </div>
+      </header>
+
+      <div class="auth-tabs" role="tablist" aria-label="Acceso Monetto">
+        <button
+          :class="{ active: mode === 'login' }"
+          type="button"
+          role="tab"
+          :aria-selected="mode === 'login'"
+          @click="mode = 'login'"
+        >
+          Iniciar sesion
+        </button>
+        <button
+          :class="{ active: mode === 'register' }"
+          type="button"
+          role="tab"
+          :aria-selected="mode === 'register'"
+          @click="mode = 'register'"
+        >
+          Crear cuenta
+        </button>
       </div>
 
-      <div class="auth-form-panel">
-        <div class="mobile-brand">
-          <img :src="monettoLogo" alt="" class="brand-logo" />
-          <strong>Monetto</strong>
-        </div>
-
-        <div class="auth-tabs" role="tablist" aria-label="Acceso Monetto">
-          <button
-            :class="{ active: mode === 'login' }"
-            type="button"
-            role="tab"
-            :aria-selected="mode === 'login'"
-            @click="mode = 'login'"
-          >
-            Iniciar sesión
-          </button>
-          <button
-            :class="{ active: mode === 'register' }"
-            type="button"
-            role="tab"
-            :aria-selected="mode === 'register'"
-            @click="mode = 'register'"
-          >
-            Crear cuenta
-          </button>
-        </div>
-
-        <form class="auth-form" novalidate @submit.prevent="submitAuth">
+      <form class="auth-form" novalidate @submit.prevent="submitAuth">
+        <div class="form-heading">
           <h2>{{ formTitle }}</h2>
-
-          <label for="auth-email">
-            <span>Correo electrónico</span>
-            <span class="field-with-icon">
-              <AppIcon name="mail" :size="20" />
-              <input
-                id="auth-email"
-                v-model.trim="form.email"
-                type="email"
-                placeholder="ejemplo@monetto.com"
-                autocomplete="email"
-                required
-              />
-            </span>
-          </label>
-
-          <label for="auth-password">
-            <span>Contraseña</span>
-            <span class="field-with-icon">
-              <AppIcon name="lock" :size="20" />
-              <input
-                id="auth-password"
-                v-model="form.password"
-                :type="showPassword ? 'text' : 'password'"
-                placeholder="••••••••"
-                :autocomplete="passwordAutocomplete"
-                minlength="8"
-                required
-              />
-              <button
-                class="field-button"
-                type="button"
-                :aria-label="showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'"
-                @click="showPassword = !showPassword"
-              >
-                <AppIcon :name="showPassword ? 'visibility' : 'visibility_off'" :size="20" />
-              </button>
-            </span>
-          </label>
-
-          <label v-if="mode === 'register'" class="auth-extra-field" for="auth-name">
-            <span>Nombre</span>
-            <span class="field-with-icon">
-              <AppIcon name="person" :size="20" />
-              <input
-                id="auth-name"
-                v-model.trim="form.name"
-                type="text"
-                placeholder="Nombre completo"
-                autocomplete="name"
-                required
-              />
-            </span>
-          </label>
-
-          <div class="form-row">
-            <label class="check-label">
-              <input type="checkbox" />
-              <span>Mantener sesión iniciada</span>
-            </label>
-            <button class="link-button" :class="{ invisible: mode === 'register' }" type="button">
-              ¿Olvidaste tu contraseña?
-            </button>
-          </div>
-
-          <p v-if="errorMessage" class="form-error" role="alert">{{ errorMessage }}</p>
-
-          <button class="submit-button" type="submit" :disabled="isSubmitting">
-            {{ isSubmitting ? 'Conectando...' : submitLabel }}
-          </button>
-        </form>
-
-        <div class="auth-divider"><span>O continúa con</span></div>
-
-        <div class="social-row">
-          <button type="button">Google</button>
-          <button type="button">Apple</button>
+          <p>{{ formHelper }}</p>
         </div>
+
+        <label v-if="mode === 'register'" for="auth-name">
+          <span>Nombre</span>
+          <span class="field-with-icon">
+            <AppIcon name="person" :size="20" />
+            <input
+              id="auth-name"
+              v-model.trim="form.name"
+              type="text"
+              placeholder="Nombre completo"
+              autocomplete="name"
+              required
+            />
+          </span>
+        </label>
+
+        <label for="auth-email">
+          <span>Correo electronico</span>
+          <span class="field-with-icon">
+            <AppIcon name="mail" :size="20" />
+            <input
+              id="auth-email"
+              v-model.trim="form.email"
+              type="email"
+              placeholder="ejemplo@monetto.com"
+              autocomplete="email"
+              required
+            />
+          </span>
+        </label>
+
+        <label for="auth-password">
+          <span>Contrasena</span>
+          <span class="field-with-icon">
+            <AppIcon name="lock" :size="20" />
+            <input
+              id="auth-password"
+              v-model="form.password"
+              :type="showPassword ? 'text' : 'password'"
+              placeholder="********"
+              :autocomplete="passwordAutocomplete"
+              minlength="8"
+              required
+            />
+            <button
+              class="field-button"
+              type="button"
+              :aria-label="showPassword ? 'Ocultar contrasena' : 'Mostrar contrasena'"
+              @click="showPassword = !showPassword"
+            >
+              <AppIcon :name="showPassword ? 'visibility' : 'visibility_off'" :size="20" />
+            </button>
+          </span>
+        </label>
+
+        <p v-if="errorMessage" class="form-error" role="alert">{{ errorMessage }}</p>
+
+        <button class="submit-button" type="submit" :disabled="isSubmitting">
+          {{ isSubmitting ? 'Conectando...' : submitLabel }}
+        </button>
+      </form>
+
+      <!-- Social login hidden for now: not used in this personal app.
+      <div class="auth-divider"><span>O continua con</span></div>
+      <div class="social-row">
+        <button type="button">Google</button>
+        <button type="button">Apple</button>
       </div>
+      -->
     </section>
   </main>
 </template>
@@ -197,198 +165,56 @@ async function submitAuth() {
   display: grid;
   min-height: 100dvh;
   place-items: center;
-  padding: 16px;
+  padding: 24px;
   background:
-    radial-gradient(circle at 18% 12%, rgba(8, 239, 245, 0.22), transparent 34%),
-    radial-gradient(circle at 86% 70%, rgba(51, 215, 218, 0.12), transparent 30%),
-    linear-gradient(180deg, #06181b 0, #031114 58%, #020c0e 100%),
+    linear-gradient(180deg, rgba(8, 239, 245, 0.1), transparent 280px),
+    linear-gradient(180deg, #06181b 0, #031114 62%, #020c0e 100%),
     var(--background);
 }
 
 .auth-card {
   display: grid;
-  width: min(1180px, 100%);
-  height: min(700px, calc(100dvh - 32px));
-  min-height: 620px;
-  grid-template-columns: minmax(0, 1fr) minmax(420px, 0.9fr);
-  overflow: hidden;
-  border: 1px solid var(--outline);
+  width: min(480px, 100%);
+  gap: 24px;
+  padding: 32px;
+  border: 1px solid rgba(51, 215, 218, 0.2);
   border-radius: var(--radius);
-  background: var(--surface);
+  background:
+    linear-gradient(180deg, rgba(9, 31, 35, 0.98), rgba(7, 28, 32, 0.98)),
+    var(--surface);
   box-shadow: var(--shadow);
 }
 
-.auth-visual {
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  overflow: hidden;
-  padding: 56px;
-  background:
-    linear-gradient(rgba(8, 239, 245, 0.12) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(8, 239, 245, 0.12) 1px, transparent 1px),
-    linear-gradient(145deg, #092328 0%, #071c20 48%, #041317 100%);
-  background-size: 36px 36px;
-  color: var(--text);
-}
-
-.auth-brand,
-.trust-list div {
-  display: flex;
-  align-items: center;
-}
-
 .auth-brand {
-  gap: 14px;
-  margin-bottom: 36px;
-}
-
-.auth-brand h1 {
-  color: var(--primary-strong);
-  font-size: 34px;
-  font-weight: 800;
-}
-
-.brand-mark {
-  display: inline-flex;
-  width: 44px;
-  height: 44px;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(8, 239, 245, 0.52);
-  border-radius: var(--radius);
-  background:
-    radial-gradient(circle at 50% 42%, rgba(8, 239, 245, 0.34), rgba(51, 215, 218, 0.14) 42%, transparent 68%),
-    #082326;
-  color: var(--primary);
-  box-shadow:
-    0 0 0 4px rgba(8, 239, 245, 0.1),
-    0 14px 28px rgba(8, 239, 245, 0.2);
-}
-
-.brand-mark.large {
-  width: 54px;
-  height: 54px;
+  gap: 14px;
 }
 
 .brand-logo {
   display: block;
-  width: 36px;
-  height: 36px;
+  width: 50px;
+  height: 50px;
   object-fit: contain;
   filter: drop-shadow(0 0 8px rgba(8, 239, 245, 0.78)) saturate(1.2);
 }
 
-.brand-logo.large {
-  width: 48px;
-  height: 48px;
-}
-
-.auth-visual h2 {
-  max-width: 520px;
-  color: var(--text);
-  font-size: 32px;
-  line-height: 1.25;
-}
-
-.auth-visual p {
-  max-width: 460px;
-  margin-top: 16px;
-  color: var(--text-muted);
-}
-
-.trust-list {
-  display: grid;
-  gap: 14px;
-  margin-top: 44px;
-}
-
-.trust-list div {
-  width: fit-content;
-  gap: 12px;
-  padding: 10px 12px;
-  border: 1px solid rgba(8, 239, 245, 0.22);
-  border-radius: var(--radius);
-  background: var(--surface);
-  color: var(--text);
-  font-weight: 700;
-  box-shadow: var(--shadow-soft);
-}
-
-.auth-ledger-art {
-  position: absolute;
-  right: 36px;
-  bottom: 28px;
-  display: grid;
-  width: min(280px, 44%);
-  gap: 12px;
-  padding: 18px;
-  border: 1px solid rgba(8, 239, 245, 0.22);
-  border-radius: var(--radius);
-  background: rgba(3, 17, 20, 0.76);
-  box-shadow: var(--shadow-soft);
-  pointer-events: none;
-}
-
-.auth-ledger-art span {
-  display: block;
-  height: 12px;
-  border-radius: 999px;
-  background: rgba(8, 239, 245, 0.16);
-}
-
-.auth-ledger-art span:nth-child(1) {
-  width: 86%;
-}
-
-.auth-ledger-art span:nth-child(2) {
-  width: 64%;
-  background: rgba(8, 239, 245, 0.62);
-}
-
-.auth-ledger-art span:nth-child(3) {
-  width: 74%;
-}
-
-.auth-ledger-art i {
-  display: block;
-  width: 100%;
-  height: 86px;
-  border-radius: var(--radius);
-  background:
-    linear-gradient(150deg, transparent 0 28%, rgba(8, 239, 245, 0.78) 28% 33%, transparent 33% 100%),
-    linear-gradient(18deg, transparent 0 42%, rgba(51, 215, 218, 0.38) 42% 47%, transparent 47% 100%),
-    rgba(8, 239, 245, 0.08);
-}
-
-.auth-form-panel {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  overflow-y: auto;
-  padding: 36px 56px;
-}
-
-.mobile-brand {
-  display: none;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 24px;
-}
-
-.mobile-brand strong {
-  display: block;
+.auth-brand h1 {
   color: var(--primary-strong);
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 800;
   line-height: 1.1;
+}
+
+.auth-brand p {
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 700;
 }
 
 .auth-tabs {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  margin-bottom: 22px;
   gap: 4px;
   padding: 4px;
   border: 1px solid var(--outline);
@@ -421,8 +247,20 @@ async function submitAuth() {
   gap: 14px;
 }
 
-.auth-form h2 {
-  font-size: 28px;
+.form-heading {
+  display: grid;
+  gap: 6px;
+}
+
+.form-heading h2 {
+  font-size: 30px;
+  line-height: 1.12;
+}
+
+.form-heading p {
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 700;
 }
 
 .field-with-icon {
@@ -438,8 +276,8 @@ async function submitAuth() {
 }
 
 .field-with-icon input {
-  padding-left: 42px;
   padding-right: 48px;
+  padding-left: 42px;
 }
 
 .field-button {
@@ -460,40 +298,8 @@ async function submitAuth() {
   color: var(--primary-strong);
 }
 
-.form-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.invisible {
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.check-label {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: var(--text-muted);
-  font-size: 13px;
-}
-
-.check-label input {
-  width: 18px;
-  min-height: 18px;
-}
-
-.link-button {
-  border: 0;
-  background: transparent;
-  color: var(--primary-strong);
-  font-size: 14px;
-  font-weight: 800;
-}
-
 .submit-button {
+  margin-top: 4px;
   min-height: 50px;
   padding: 0 18px;
   border: 0;
@@ -526,77 +332,18 @@ async function submitAuth() {
   font-weight: 800;
 }
 
-.auth-divider {
-  position: relative;
-  margin: 20px 0;
-  text-align: center;
-}
+@media (max-width: 560px) {
+  .auth-page {
+    padding: 16px;
+  }
 
-.auth-divider::before {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 1px;
-  background: var(--outline);
-  content: '';
-}
-
-.auth-divider span {
-  position: relative;
-  padding: 0 14px;
-  background: var(--surface);
-  color: var(--text-muted);
-  font-size: 13px;
-}
-
-.social-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
-}
-
-.social-row button {
-  min-height: 44px;
-  border: 1px solid var(--outline);
-  border-radius: var(--radius);
-  background: var(--surface);
-  color: var(--text);
-  font-weight: 800;
-}
-
-.social-row button:hover {
-  background: var(--surface-high);
-}
-
-@media (max-width: 900px) {
   .auth-card {
-    height: auto;
-    min-height: 0;
-    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 24px;
   }
 
-  .auth-visual {
-    display: none;
-  }
-
-  .auth-form-panel {
-    padding: 32px 24px;
-  }
-
-  .mobile-brand {
-    display: flex;
-  }
-}
-
-@media (max-width: 720px) {
-  .form-row {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .social-row {
-    grid-template-columns: 1fr;
+  .form-heading h2 {
+    font-size: 26px;
   }
 }
 </style>

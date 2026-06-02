@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import { shallowRef } from 'vue'
 import TransactionBudgetAlert from '../components/transactions/TransactionBudgetAlert.vue'
 import TransactionFilters from '../components/transactions/TransactionFilters.vue'
+import TransactionFormDialog from '../components/transactions/TransactionFormDialog.vue'
 import TransactionHeader from '../components/transactions/TransactionHeader.vue'
-import TransactionQuickForm from '../components/transactions/TransactionQuickForm.vue'
 import TransactionTable from '../components/transactions/TransactionTable.vue'
 import { useTransactionScreen } from '../composables/useTransactionScreen'
-import type { TransactionType } from '../types'
+import type { Transaction, TransactionFormPayload, TransactionType } from '../types'
 
 const props = defineProps<{
   transactionType: TransactionType
@@ -36,11 +37,44 @@ const {
   total,
   visibleTransactions,
 } = useTransactionScreen(() => props.transactionType)
+
+const isFormDialogOpen = shallowRef(false)
+
+function openCreateDialog() {
+  cancelEdit()
+  isFormDialogOpen.value = true
+}
+
+function openEditDialog(transaction: Transaction) {
+  startEdit(transaction)
+  isFormDialogOpen.value = true
+}
+
+function closeFormDialog() {
+  cancelEdit()
+  isFormDialogOpen.value = false
+}
+
+async function handleSaveTransaction(payload: TransactionFormPayload) {
+  const wasSaved = await saveTransaction(payload)
+
+  if (wasSaved) {
+    isFormDialogOpen.value = false
+  }
+}
 </script>
 
 <template>
-  <section class="page-stack">
-    <TransactionHeader :cta-label="ctaLabel" :helper="helper" :title="title" />
+  <section class="page-stack transaction-page" :class="isIncome ? 'income-view' : 'expense-view'">
+    <TransactionHeader
+      :count="pagination.total"
+      :cta-label="ctaLabel"
+      :helper="helper"
+      :is-income="isIncome"
+      :title="title"
+      :total="total"
+      @create="openCreateDialog"
+    />
 
     <TransactionBudgetAlert
       v-if="!isIncome && hasBudgetLimit"
@@ -49,53 +83,48 @@ const {
       :usage="budgetUsage"
     />
 
-    <TransactionFilters
-      v-model:category-id="filters.categoryId"
-      v-model:date-from="filters.dateFrom"
-      v-model:date-to="filters.dateTo"
-      :category-options="categoryOptions"
-      :is-income="isIncome"
-      @apply="applyFilters"
-      @reset="resetFilters"
-    />
+    <div class="transaction-workspace">
+      <TransactionFilters
+        v-model:category-id="filters.categoryId"
+        v-model:date-from="filters.dateFrom"
+        v-model:date-to="filters.dateTo"
+        :category-options="categoryOptions"
+        :is-income="isIncome"
+        @apply="applyFilters"
+        @reset="resetFilters"
+      />
 
-    <p v-if="errorMessage" class="page-error" role="alert">{{ errorMessage }}</p>
+      <p v-if="errorMessage" class="page-error" role="alert">{{ errorMessage }}</p>
 
-    <div class="split-grid">
       <TransactionTable
         :is-income="isIncome"
         :pagination="pagination"
         :total="total"
         :transactions="visibleTransactions"
         @delete="removeTransaction"
-        @edit="startEdit"
+        @edit="openEditDialog"
         @page="changePage"
       />
-      <TransactionQuickForm
-        :category-options="categoryOptions"
-        :cta-label="ctaLabel"
-        :editing-transaction="editingTransaction"
-        :is-income="isIncome"
-        :is-saving="isLoading"
-        @cancel="cancelEdit"
-        @save="saveTransaction"
-      />
     </div>
+
+    <TransactionFormDialog
+      :category-options="categoryOptions"
+      :cta-label="ctaLabel"
+      :editing-transaction="editingTransaction"
+      :is-income="isIncome"
+      :is-open="isFormDialogOpen"
+      :is-saving="isLoading"
+      @close="closeFormDialog"
+      @save="handleSaveTransaction"
+    />
   </section>
 </template>
 
 <style scoped>
-.page-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.split-grid {
+.transaction-workspace {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) 360px;
-  align-items: start;
-  gap: 24px;
+  min-width: 0;
+  gap: 18px;
 }
 
 .page-error {
@@ -107,9 +136,4 @@ const {
   font-weight: 800;
 }
 
-@media (max-width: 1180px) {
-  .split-grid {
-    grid-template-columns: 1fr;
-  }
-}
 </style>

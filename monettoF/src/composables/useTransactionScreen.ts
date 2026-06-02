@@ -130,8 +130,10 @@ export function useTransactionScreen(transactionType: MaybeRefOrGetter<Transacti
 
       editingTransaction.value = null
       await loadScreen(1)
+      return true
     } catch (error) {
       errorMessage.value = error instanceof Error ? error.message : 'No se pudo guardar'
+      return false
     } finally {
       isLoading.value = false
     }

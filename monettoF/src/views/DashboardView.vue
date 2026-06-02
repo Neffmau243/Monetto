@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import AppIcon from '../components/AppIcon.vue'
-import DashboardHero from '../components/dashboard/DashboardHero.vue'
 import BudgetSummaryPanel from '../components/dashboard/BudgetSummaryPanel.vue'
 import CategoryBreakdownPanel from '../components/dashboard/CategoryBreakdownPanel.vue'
 import DashboardStats from '../components/dashboard/DashboardStats.vue'
@@ -9,15 +8,12 @@ import RecentTransactionsPanel from '../components/dashboard/RecentTransactionsP
 import { useDashboardSummary } from '../composables/useDashboardSummary'
 
 const {
-  balance,
   budgetModeDetail,
   budgetModeLabel,
   budgetSnapshot,
   budgetUsage,
   categoryBreakdown,
   errorMessage,
-  expenseTotal,
-  incomeTotal,
   isLoading,
   loadDashboard,
   recentTransactions,
@@ -41,14 +37,6 @@ const {
     </header>
 
     <p v-if="errorMessage" class="page-error" role="alert">{{ errorMessage }}</p>
-
-    <DashboardHero
-      :balance="balance"
-      :budget-remaining="budgetSnapshot.remaining"
-      :budget-usage="budgetUsage"
-      :expense-total="expenseTotal"
-      :income-total="incomeTotal"
-    />
 
     <DashboardStats :stats="stats" />
 

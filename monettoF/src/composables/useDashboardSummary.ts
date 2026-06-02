@@ -20,6 +20,7 @@ export interface DashboardStat {
   icon: string
   tone: 'neutral' | 'income' | 'expense' | 'success' | 'warning' | 'critical'
   detail: string
+  featured?: boolean
 }
 
 export interface DashboardTrendPoint {
@@ -30,28 +31,47 @@ export interface DashboardTrendPoint {
   isCurrent: boolean
 }
 
-function balanceTone(balance: number, incomeTotal: number, budgetUsage: number) {
-  if (balance < 0 || budgetUsage >= 100) {
+function balanceTone(balance: number) {
+  if (balance < 0) {
     return 'critical'
   }
 
-  if (balance === 0 || budgetUsage >= 85 || (incomeTotal > 0 && balance / incomeTotal < 0.15)) {
+  if (balance === 0) {
     return 'warning'
   }
 
   return 'success'
 }
 
-function balanceDetail(tone: ReturnType<typeof balanceTone>, month: string) {
-  if (tone === 'critical') {
-    return `Deficit o presupuesto agotado en ${month}`
+function balanceDetail(balance: number, transactionCount: number) {
+  if (transactionCount === 0) {
+    return 'Sin movimientos acumulados todavia.'
   }
 
-  if (tone === 'warning') {
-    return `Margen ajustado en ${month}`
+  if (balance < 0) {
+    return 'Alcancia en negativo: revisa tus salidas acumuladas.'
   }
 
-  return `Margen saludable en ${month}`
+  if (balance === 0) {
+    return 'Tu acumulado esta en cero.'
+  }
+
+  return `Alcancia acumulada de ${transactionCount} movimientos.`
+}
+
+async function loadAllTransactions(token: string) {
+  const firstPage = await getTransactions(token, { page: 1, limit: 100 })
+  const remainingPages = Array.from(
+    { length: Math.max(0, firstPage.total_pages - 1) },
+    (_, index) => index + 2,
+  )
+  const remainingResponses = await Promise.all(
+    remainingPages.map((page) => getTransactions(token, { page, limit: 100 })),
+  )
+
+  return [firstPage, ...remainingResponses].flatMap((response) =>
+    response.items.map(mapTransaction),
+  )
 }
 
 export function useDashboardSummary() {
@@ -61,6 +81,7 @@ export function useDashboardSummary() {
   const expensesByCategory = shallowRef<ExpensesByCategoryOut[]>([])
   const trend = shallowRef<MonthlyTrendOut[]>([])
   const recentTransactionsRaw = shallowRef<Transaction[]>([])
+  const lifetimeTransactionsRaw = shallowRef<Transaction[]>([])
   const isLoading = shallowRef(false)
   const errorMessage = shallowRef('')
 
@@ -70,18 +91,26 @@ export function useDashboardSummary() {
 
     try {
       const token = requireToken()
-      const [summaryResponse, categoryResponse, trendResponse, transactionsResponse] =
+      const [
+        summaryResponse,
+        categoryResponse,
+        trendResponse,
+        transactionsResponse,
+        lifetimeTransactionsResponse,
+      ] =
         await Promise.all([
           getDashboardSummary(token, month),
           getExpensesByCategory(token, month),
           getMonthlyTrend(token, 6),
           getTransactions(token, { page: 1, limit: 5 }),
+          loadAllTransactions(token),
         ])
 
       summary.value = summaryResponse
       expensesByCategory.value = categoryResponse
       trend.value = trendResponse
       recentTransactionsRaw.value = transactionsResponse.items.map(mapTransaction)
+      lifetimeTransactionsRaw.value = lifetimeTransactionsResponse
     } catch (error) {
       errorMessage.value = error instanceof Error ? error.message : 'No se pudo cargar el dashboard'
     } finally {
@@ -95,7 +124,13 @@ export function useDashboardSummary() {
 
   const incomeTotal = computed(() => toNumber(summary.value?.total_income ?? '0.00'))
   const expenseTotal = computed(() => toNumber(summary.value?.total_expenses ?? '0.00'))
-  const balance = computed(() => toNumber(summary.value?.balance ?? '0.00'))
+  const balance = computed(() =>
+    lifetimeTransactionsRaw.value.reduce((sum, transaction) => {
+      const amount = toNumber(transaction.amount)
+
+      return transaction.type === 'INCOME' ? sum + amount : sum - amount
+    }, 0),
+  )
   const budgetSnapshot = computed(() =>
     currentBudgetSnapshot(
       summary.value?.budget_info?.amount,
@@ -148,32 +183,33 @@ export function useDashboardSummary() {
     })),
   )
   const recentTransactions = computed(() => recentTransactionsRaw.value)
-  const currentBalanceTone = computed(() =>
-    balanceTone(balance.value, incomeTotal.value, budgetUsage.value),
-  )
+  const currentBalanceTone = computed(() => balanceTone(balance.value))
   const stats = computed<DashboardStat[]>(() => [
     {
       label: 'Balance total',
-      value: formatMoney(balance.value, 'auto'),
-      icon: 'account_balance',
+      value: formatMoney(balance.value, balance.value < 0 ? 'auto' : 'none'),
+      icon: 'savings',
       tone: currentBalanceTone.value,
-      detail: summary.value
-        ? balanceDetail(currentBalanceTone.value, summary.value.month)
-        : 'Esperando datos del backend',
+      detail: balanceDetail(balance.value, lifetimeTransactionsRaw.value.length),
+      featured: true,
     },
     {
       label: 'Ingresos del mes',
       value: formatMoney(incomeTotal.value),
       icon: 'trending_up',
       tone: 'income',
-      detail: 'Total calculado por Monetto API',
+      detail: summary.value
+        ? `Entradas registradas en ${formatMonthLabel(summary.value.month)}`
+        : 'Esperando datos del backend',
     },
     {
       label: 'Gastos del mes',
       value: formatMoney(expenseTotal.value),
       icon: 'trending_down',
       tone: 'expense',
-      detail: 'Total calculado por Monetto API',
+      detail: summary.value
+        ? `Salidas registradas en ${formatMonthLabel(summary.value.month)}`
+        : 'Esperando datos del backend',
     },
   ])
 

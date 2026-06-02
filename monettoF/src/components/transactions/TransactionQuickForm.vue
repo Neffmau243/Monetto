@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, reactive, watch } from 'vue'
+import AppIcon from '../AppIcon.vue'
 import type { Category, Transaction, TransactionFormPayload } from '../../types'
 import { currentDate, moneyString } from '../../utils/formatters'
 
@@ -69,8 +70,11 @@ function submitForm() {
 </script>
 
 <template>
-  <aside class="panel quick-form-panel">
-    <div class="panel-heading">
+  <aside class="panel quick-form-panel" :class="isIncome ? 'income' : 'expense'">
+    <div class="quick-form-heading">
+      <span class="form-icon" aria-hidden="true">
+        <AppIcon :name="isIncome ? 'add_card' : 'receipt_long'" :size="22" />
+      </span>
       <div>
         <h3>{{ formTitle }}</h3>
         <p>{{ helperText }}</p>
@@ -78,11 +82,11 @@ function submitForm() {
     </div>
 
     <form class="compact-form" @submit.prevent="submitForm">
-      <label>
+      <label class="full-field">
         <span>Concepto</span>
         <input v-model.trim="form.description" maxlength="255" placeholder="Descripcion" type="text" />
       </label>
-      <label>
+      <label class="full-field">
         <span>Categoria</span>
         <select v-model="form.categoryId" required>
           <option value="" disabled>Selecciona categoria</option>
@@ -91,15 +95,18 @@ function submitForm() {
           </option>
         </select>
       </label>
-      <label>
-        <span>Monto</span>
-        <input v-model="form.amount" placeholder="0.00" type="number" min="0.01" step="0.01" required />
-      </label>
-      <label>
-        <span>Fecha</span>
-        <input v-model="form.date" type="date" :max="currentDate()" required />
-      </label>
+      <div class="form-row">
+        <label>
+          <span>Monto</span>
+          <input v-model="form.amount" placeholder="0.00" type="number" min="0.01" step="0.01" required />
+        </label>
+        <label>
+          <span>Fecha</span>
+          <input v-model="form.date" type="date" :max="currentDate()" required />
+        </label>
+      </div>
       <button class="submit-button compact" type="submit" :disabled="isSaving">
+        <AppIcon :name="editingTransaction ? 'save' : 'add_circle'" :size="20" />
         {{ editingTransaction ? 'Guardar cambios' : ctaLabel }}
       </button>
       <button
@@ -116,8 +123,48 @@ function submitForm() {
 
 <style scoped>
 .quick-form-panel {
-  position: sticky;
-  top: 100px;
+  width: 100%;
+  padding: 28px;
+  border-color: rgba(82, 231, 168, 0.22);
+}
+
+.quick-form-panel.expense {
+  border-color: rgba(255, 109, 122, 0.22);
+}
+
+.quick-form-heading {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.quick-form-heading h3 {
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.quick-form-heading p {
+  margin-top: 4px;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.form-icon {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: var(--radius);
+  background: var(--secondary-soft);
+  color: var(--secondary);
+}
+
+.quick-form-panel.expense .form-icon {
+  background: var(--danger-soft);
+  color: var(--danger);
 }
 
 .compact-form {
@@ -125,13 +172,30 @@ function submitForm() {
   gap: 16px;
 }
 
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.submit-button.compact {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
 .compact-secondary {
   width: 100%;
 }
 
-@media (max-width: 1180px) {
+@media (max-width: 540px) {
   .quick-form-panel {
-    position: static;
+    padding: 22px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
   }
 }
 </style>

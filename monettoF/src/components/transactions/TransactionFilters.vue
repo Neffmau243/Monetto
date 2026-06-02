@@ -19,6 +19,13 @@ const emit = defineEmits<{
 
 <template>
   <section class="filters-panel" aria-label="Filtros de transacciones">
+    <div class="filters-title">
+      <AppIcon name="tune" :size="20" />
+      <div>
+        <strong>Filtros</strong>
+        <span>{{ isIncome ? 'Afina ingresos por fecha o categoria' : 'Afina gastos por fecha o categoria' }}</span>
+      </div>
+    </div>
     <label>
       <span>Rango de fechas</span>
       <div class="date-row">
@@ -50,14 +57,47 @@ const emit = defineEmits<{
 <style scoped>
 .filters-panel {
   display: grid;
-  grid-template-columns: 1.3fr 1fr auto;
+  grid-template-columns: minmax(180px, 0.8fr) minmax(280px, 1.2fr) minmax(220px, 1fr) auto;
   align-items: end;
-  gap: 18px;
-  padding: 20px;
+  gap: 16px;
+  padding: 18px;
   border: 1px solid rgba(51, 215, 218, 0.16);
   border-radius: var(--radius);
-  background: var(--surface);
+  background:
+    linear-gradient(180deg, rgba(9, 31, 35, 0.98), rgba(7, 28, 32, 0.98)),
+    var(--surface);
   box-shadow: var(--shadow-soft);
+}
+
+.filters-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 46px;
+  color: var(--primary-strong);
+}
+
+.filters-title > .app-icon {
+  padding: 10px;
+  border-radius: var(--radius);
+  background: var(--primary-soft);
+}
+
+.filters-title strong,
+.filters-title span {
+  display: block;
+}
+
+.filters-title strong {
+  color: var(--text);
+  font-size: 14px;
+  line-height: 1.2;
+}
+
+.filters-title span {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .date-row {
@@ -77,6 +117,7 @@ const emit = defineEmits<{
     grid-template-columns: 1fr 1fr;
   }
 
+  .filters-title,
   .filter-actions {
     justify-content: flex-start;
   }
